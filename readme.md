@@ -3,6 +3,8 @@ Scroll Depth is a Google Analytics plugin that tracks how far users are scrollin
 
 **[All information is available on the Project Page](http://projects.parsnip.io/scroll-depth/)**
 
+This fork includes one additional setting - `reportOnce`. If set, the plugin will shutdown after sending the first event for a mark/element (e.g., after reaching 25%, it will report that and then quit)
+
 ## Contributing
 Bug reports and code contributions are welcome. Please see [contributing.md](https://github.com/robflaherty/jquery-scrolldepth/blob/master/contributing.md).
 
@@ -13,6 +15,8 @@ There's a test HTML file that mocks the Google Analytics functions and writes th
 If you have any questions you can find me on Twitter at [@robflaherty](https://twitter.com/robflaherty). If you need help fixing something, **please provide a URL**.
 
 ## Changelog
+
+0.10 (04/06/16): Allow to set "reportOnce", so the plugin quits after sending a single event. 
 
 0.9 (11/19/15): Removed Baseline event. Added methods to add elements, remove elements, and reset the current scroll tracking state.
 

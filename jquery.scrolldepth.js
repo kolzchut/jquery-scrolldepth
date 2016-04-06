@@ -1,6 +1,6 @@
 /*!
  * @preserve
- * jquery.scrolldepth.js | v0.9
+ * jquery.scrolldepth.js | v0.10
  * Copyright (c) 2015 Rob Flaherty (@robflaherty)
  * Licensed under the MIT and GPL licenses.
  */
@@ -14,6 +14,7 @@
     percentage: true,
     userTiming: true,
     pixelDepth: true,
+    reportOnce: false,
     nonInteraction: true,
     gaGlobal: false,
     gtmOverride: false
@@ -143,6 +144,9 @@
         if ( $.inArray(key, cache) === -1 && scrollDistance >= val ) {
           sendEvent('Percentage', key, scrollDistance, timing);
           cache.push(key);
+          if ( options.reportOnce ) {
+            unbind();return false;
+          }
         }
       });
     }
@@ -153,6 +157,10 @@
           if ( scrollDistance >= $(elem).offset().top ) {
             sendEvent('Elements', elem, scrollDistance, timing);
             cache.push(elem);
+            if ( options.reportOnce ) {
+              unbind();
+              return false;
+            }
           }
         }
       });
@@ -167,6 +175,11 @@
       bindScrollDepth();
     }
 
+    function unbind() {
+      $window.off('scroll.scrollDepth');
+      scrollEventBound = false;
+    }
+
     /*
      * Public Methods
      */
@@ -175,7 +188,7 @@
     $.scrollDepth.reset = function() {
       cache = [];
       lastPixelDepth = 0;
-      $window.off('scroll.scrollDepth');
+      unbind();
       bindScrollDepth();
     };
 
@@ -280,8 +293,7 @@
 
         // If all marks already hit, unbind scroll event
         if (cache.length >= options.elements.length + (options.percentage ? 4:0)) {
-          $window.off('scroll.scrollDepth');
-          scrollEventBound = false;
+          unbind();
           return;
         }
 
